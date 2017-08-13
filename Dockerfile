@@ -38,12 +38,13 @@ RUN { \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 # PECL extensions
-RUN pecl install APCu-4.0.11 redis memcached \
-	&& docker-php-ext-enable apcu redis memcached
+RUN set -ex \
+	&& pecl install APCu-4.0.10 memcached-2.2.0  redis-2.2.8 \
+	&& docker-php-ext-enable apcu memcached redis
 
 RUN a2enmod rewrite
 
-ENV OWNCLOUD_VERSION 9.1.4
+ENV OWNCLOUD_VERSION 9.1.6
 
 RUN curl -fsSL -o owncloud.tar.bz2 \
 		"https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.tar.bz2" \
